@@ -25,6 +25,15 @@ arr1=(/var/www/html/*/)
 echo ${arr1[@]}
 total=${#arr1[@]}
 touch /etc/apache2/sites-available/reponame.conf
+##to install the code deploy agent in here
+sudo apt install ruby-full -y
+sudo apt install wget -y
+cd /home/ubuntu/
+wget https://aws-codedeploy-us-east-2.s3.us-east-2.amazonaws.com/latest/install
+chmod +x ./install
+#./install auto
+sudo ./install auto > /tmp/logfile
+sudo service codedeploy-agent status
 for(( i=0; i<$total; i++ ))
 do
 	type=`jq -r .deployment_type ${arr1[$i]}/deploy.json`
@@ -177,15 +186,7 @@ done
 #a2ensite reponame.conf
 #systemctl restart apache2
 
-##to install the code deploy agent in here
-sudo apt install ruby-full -y
-sudo apt install wget -y
-cd /home/ubuntu/
-wget https://aws-codedeploy-us-east-2.s3.us-east-2.amazonaws.com/latest/install
-chmod +x ./install
-#./install auto
-sudo ./install auto > /tmp/logfile
-sudo service codedeploy-agent status
+
 
 
 
